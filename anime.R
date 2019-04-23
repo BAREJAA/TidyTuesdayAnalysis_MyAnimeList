@@ -15,4 +15,9 @@ rating <- tidier_anime %>%
                                     rating == "PG - Children" ~ "PG or lower",
                                     rating == "PG-13 - Teens 13 or older" ~ "PG-13",
                                     rating == "R - 17+ (violence & profanity)" ~ "R",
-                                    rating == "R+ - Mild Nudity" ~ "R"))
+                                    rating == "R+ - Mild Nudity" ~ "R"),
+         episodes_reduced = case_when(episodes == 1 ~ "Movie / One off",
+                                      episodes > 1 ~ "Episodic"))
+
+episodic <- tidier_anime %>%
+  filter(episodes > 1)
