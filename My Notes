@@ -1,0 +1,29 @@
+This is an excellent example of both the use of ridge plots and graph formatting. Conisder using this as a template/guide for plotting your 
+graphs
+
+Useful functions/code - 
+
+date <- tidy_anime %>%
+  mutate(lub_date = ymd(start_date), 
+         year = floor_date(lub_date, unit = "year"),
+         decade = year(floor_date(lub_date, unit = years(10)))) %>%
+  filter(is.na(decade) != TRUE,
+         is.na(score) != TRUE)
+         
+This first converts "start_date" into a date object, then creates a "year" variable that stores all the dates in the format "year-01-01"
+(I'm not sure why this was done)
+To extract the decade from each date object, the following code was used - year(floor_date(lub_date, unit = years(10))
+
+He then went on the draw a nicely-formatted ridge-plot of the distribution of scores across the decades
+
+I think there's a problem with the code as is - the "date" dataframe containes multiple scores for each anime, with the number equalling
+the number of genres. This is just repeated data that will skew the distributions toward genre-heavy anime shows. To solve this problem,
+you could make a new dataframe that contains only one decade and one score value for each show. This code achieves that - 
+
+date_unique <- date %>% group_by(name) %>% summarize(score = mean(score), decade = mean(decade))
+
+Compare the plots for "date" and "date_unique". They are similar but not identical
+
+geom_density_ridges() is intuitive
+
+Look at the way fct_rev() and as.factor() were used to arrange the decades
